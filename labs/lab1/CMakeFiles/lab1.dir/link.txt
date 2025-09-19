@@ -1,0 +1,2 @@
+/usr/bin/ar qc liblab1.a CMakeFiles/lab1.dir/src/filter_text.cpp.o
+/usr/bin/ranlib liblab1.a
