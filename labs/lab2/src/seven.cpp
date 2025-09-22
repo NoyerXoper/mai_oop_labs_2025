@@ -3,6 +3,7 @@
 #include <memory>
 #include <headers/seven.hpp>
 #include <stdexcept>
+#include <algorithm>
 
 namespace {
 inline unsigned char true_mod(char a, unsigned char base) {
@@ -31,7 +32,7 @@ Seven::Seven(const std::initializer_list<unsigned char>& il): size_(il.size()), 
 Seven::Seven(const std::string& str): size_(str.size()), capacity_(str.size()), data_(new unsigned char[capacity_]){
     int i = size_ - 1;
     for (unsigned char ch: str) {
-        data_[i] = ch;
+        data_[i] = ch - static_cast<unsigned char>('0');
         --i;
     }
 }
@@ -181,4 +182,11 @@ bool Seven::Bigger(const Seven& other) const {
     } 
     return false;
 
+}
+
+std::ostream& operator<<(std::ostream& stream, const Seven& seven) {
+    for (int i = seven.size_ - 1; i >= 0; --i) {
+        stream << seven.data_[i];
+    }
+    return stream;
 }

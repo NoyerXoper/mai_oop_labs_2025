@@ -27,6 +27,10 @@ public:
 
     void Swap(Seven& other);
 
+    std::string ToString() const;
+
+    friend std::ostream& operator<<(std::ostream&, const Seven&);
+
 
 private:
     size_t size_;
