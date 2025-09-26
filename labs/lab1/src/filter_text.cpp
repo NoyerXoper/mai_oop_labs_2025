@@ -1,12 +1,12 @@
 #include <string>
 #include <vector>
 
+
 namespace {
     inline bool IsNumber(char ch) {
         return '0' <= ch && ch <= '9';
     }
 }
-
 
 std::vector<int> GetNumbersFromString(const std::string& text) noexcept {
     bool did_number_end = true;

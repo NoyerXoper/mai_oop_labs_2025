@@ -1,7 +1,8 @@
-#include <gtest/gtest.h>
+#include <gtest>
 #include <string>
 #include <vector>
 #include "filter_text.cpp"
+
 
 TEST(FilterTextTest, BasicTest) {
     std::string text = "Hello 25, World7w09_hello2\n";
