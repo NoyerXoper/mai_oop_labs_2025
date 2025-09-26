@@ -1,18 +1,23 @@
 cmake_minimum_required(VERSION 3.10)
 project(lab2)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(SOURCE "src")
+set(SOURCE "src") 
+set(TESTS tests)
 set(HEADER "headers")
 
-enable_testing()
-
-add_library(lab2_array ${HEADER}/array.hpp ${SOURCES}/array.cpp)
-#add_library(lab2_seven ${HEADER}/seven.hpp ${SOURCES}/seven.cpp)
+include_directories(${HEADER})
+add_library(lab2_array ${SOURCE}/array.cpp)
+add_library(lab2_seven ${SOURCE}/seven.cpp)
+target_link_libraries(lab2_seven lab2_array)
 
 add_executable(lab2 main.cpp)
+target_link_libraries(lab2 PRIVATE lab2_array lab2_seven)
+
+add_executable(lab2ArrayTest ${TESTS}/array_test.cpp)
+target_link_libraries(lab2ArrayTest PRIVATE lab2_array lab2_seven gtest_main)
+
+add_executable(lab2SevenTest ${TESTS}/seven_test.cpp)
+target_link_libraries(lab2SevenTest PRIVATE lab2_array lab2_seven gtest_main)
 
 #add_executable(Lab1Tests tests/tests.cpp)
 #target_link_libraries(Lab1Tests PRIVATE gtest_main)

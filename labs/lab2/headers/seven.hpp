@@ -4,11 +4,10 @@
 #include <string>
 #include "array.hpp"
 
-namespace Seven {
 class Seven {
 public:
     Seven();
-    Seven(std::size_t size, unsigned char ch);
+    Seven(std::size_t size, unsigned char digit);
     Seven(const std::initializer_list<unsigned char>& il);
     Seven(const std::string& str);
 
@@ -16,7 +15,7 @@ public:
     Seven(Seven&& other) noexcept;
     virtual ~Seven() noexcept;
 
-    bool Equals(const Seven& other) const noexcept;
+    inline bool Equals(const Seven& other) const noexcept;
     bool Greater(const Seven& other) const noexcept;
     bool Smaller(const Seven& other) const noexcept;
 
@@ -25,10 +24,8 @@ public:
 
 private:
     Seven(std::size_t size);
-    Array::Array _digits;
+    Array _digits;
 };
 
 Seven Add(const Seven& first, const Seven& second);
 Seven Subtract(const Seven& first, const Seven& second);
-
-};

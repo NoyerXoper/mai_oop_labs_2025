@@ -1,33 +1,63 @@
-#pragma once
+#include "seven.hpp"
 
 #include <memory>
-#include <seven.hpp>
 #include <initializer_list>
 #include <stdexcept>
 
 namespace {
-inline std::size_t mod7_diff(std::size_t a, std::size_t b) {
+inline std::size_t Mod7Diff(std::size_t a, std::size_t b) {
     return a > b ? (a - b) % 7 : (7 + a - b) % 7;
+}
+void RemoveLeadingZeroes(Array& array) {
+    while (array.Size() > 0 && array.Back() == 0) {
+        array.PopBack();
+    }
 }
 }
 
-namespace Seven {
-Seven::Seven() = default;
-Seven::Seven(std::size_t size, unsigned char ch): _digits(size, ch) {}
-Seven::Seven(const std::initializer_list<unsigned char>& il): _digits(il) {}
-Seven::Seven(const std::string& str): _digits(str.size()) {
-    for(auto it = str.rbegin(); it != str.rend(); ++it) {
-        _digits.PushBack(*it);
+Seven::Seven(): _digits(1, '0') {}
+Seven::Seven(std::size_t size, unsigned char digit): _digits(size, digit) {
+    if (size == 0) {
+        throw std::invalid_argument("Number can't be a length of 0");
     }
+    if (digit > 6) {
+        throw std::invalid_argument("Digit can't be greater that 6");
+    }
+    RemoveLeadingZeroes(_digits);
 }
-Seven::Seven(std::size_t size): _digits(size) {}
+Seven::Seven(const std::initializer_list<unsigned char>& il): _digits(il.size(), 0) {
+    if (il.size() == 0) {
+        throw std::invalid_argument("Initializer list can't be empty");
+    }
+    std::size_t i = il.size();
+    for(auto it = il.begin(); it != il.end(); ++it) {
+        if (*it > 6) {
+            throw std::invalid_argument("Numbers in initializer list must be not greater that 6");
+        }
+        _digits.Get(--i) = *it;
+    }
+    RemoveLeadingZeroes(_digits);
+}
+
+Seven::Seven(const std::string& str): _digits(str.size()) {
+    if (str.size() == 0) {
+        throw std::invalid_argument("String can't be empty");
+    }
+    for(auto it = str.rbegin(); it != str.rend(); ++it) {
+        if (*it > '6' && *it < '0') {
+            throw std::invalid_argument("Characters in string must be digits and be not greater that 6");
+        }
+        _digits.PushBack(*it - '0');
+    }
+    RemoveLeadingZeroes(_digits);
+}
 
 Seven::Seven(const Seven& other) = default;
 Seven::Seven(Seven&& other) noexcept = default;
 Seven::~Seven() noexcept = default;
 
 
-bool Seven::Equals(const Seven& other) const noexcept {
+inline bool Seven::Equals(const Seven& other) const noexcept {
     return _digits.Equals(other._digits);
 }
 bool Seven::Smaller(const Seven& other) const noexcept {
@@ -99,24 +129,26 @@ Seven Subtract(const Seven& first, const Seven& second) {
     }
     Seven result(std::max(first._digits.Size(), second._digits.Size()));
 
-    std::size_t minLength = std::min(first._digits.Size(), second._digits.Size());
+    std::size_t minLength = second._digits.Size();
     std::size_t carry = 0;
     std::size_t digit;
 
     for (int i = 0; i < minLength; ++i) {
-        digit = mod7_diff(mod7_diff(first._digits.Get(i), second._digits.Get(i)), carry);
+        digit = Mod7Diff(Mod7Diff(first._digits.Get(i), second._digits.Get(i)), carry);
         result._digits.PushBack(digit);
         carry = (second._digits.Get(i) + carry) > first._digits.Get(i);
     } 
 
     for (int i = minLength; i < first._digits.Size(); ++i) {
-        digit = mod7_diff(first._digits.Get(i), carry);
+        digit = Mod7Diff(first._digits.Get(i), carry);
         result._digits.PushBack(digit);
         carry = carry > first._digits.Get(i);
     }
+
+    RemoveLeadingZeroes(result._digits);
+
     if (carry) {
         throw std::invalid_argument("First number must be greater or equal to second");
     }
     return result;
-}
 }

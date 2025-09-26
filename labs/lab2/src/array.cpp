@@ -1,12 +1,10 @@
-#pragma once
+#include "array.hpp"
 
-#include <array.hpp>
 #include <memory>
 
 constexpr std::size_t DEFAULT_CAPACITY = 10;
 
-namespace Array {
-Array::Array(): _capacity(DEFAULT_CAPACITY), _size(DEFAULT_CAPACITY), _data(new unsigned char[_capacity]) {}
+Array::Array(): _capacity(DEFAULT_CAPACITY), _size(0), _data(new unsigned char[_capacity]) {}
 Array::Array(std::size_t size): _capacity(size), _size(0), _data(new unsigned char[size]) {}
 Array::Array(std::size_t size, unsigned char ch): _capacity(size), _size(size), _data(new unsigned char[_capacity]) {
     for (int i = 0; i < size; ++i) {
@@ -63,6 +61,29 @@ void Array::PushBack(unsigned char ch) {
     ++_size;
 }
 
+void Array::PopBack() {
+    if (_size > 0) {
+        --_size;
+    }
+}
+
+
+inline unsigned char& Array::Front() {
+    return _data[0];
+};
+
+inline unsigned char Array::Front() const {
+    return _data[0];
+}
+
+inline unsigned char& Array::Back() {
+    return _data[_size - 1];
+}
+
+inline unsigned char Array::Back() const {
+    return _data[_size - 1];
+}
+
 void Array::Reserve(std::size_t size) {
     // if capacity is greater of equal to new capacity, just do nothing
     if (_capacity >= size) {
@@ -92,6 +113,5 @@ inline void Array::CheckCapacity(std::size_t size) {
         return;
     }
     Reserve(std::max(2 * _capacity, static_cast<std::size_t>(10)));
-}
 }
 

@@ -3,7 +3,6 @@
 #include <initializer_list>
 #include <string>
 
-namespace Array {
 class Array {
 public:
     Array();
@@ -23,6 +22,14 @@ public:
     inline unsigned char Get(std::size_t i) const noexcept;
     void PushBack(unsigned char ch);
     void Reserve(std::size_t size);
+    void PopBack();
+
+    inline unsigned char& Front();
+    inline unsigned char Front() const;
+
+    inline unsigned char& Back();
+    inline unsigned char Back() const;
+    
 
     bool Equals(const Array& other) const noexcept;
 
@@ -35,4 +42,3 @@ private:
 private:
     inline void CheckCapacity(std::size_t size); 
 };
-}
