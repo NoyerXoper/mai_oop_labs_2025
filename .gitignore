@@ -31,7 +31,13 @@ build/*
 *.a
 *.lib
 
+homeworks
+.vscode
+build
+labs/lab2
+
 # Executables
 *.exe
 *.out
 *.app
+
