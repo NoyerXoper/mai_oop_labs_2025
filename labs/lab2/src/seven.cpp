@@ -44,7 +44,7 @@ Seven::Seven(const std::string& str): _digits(str.size()) {
         throw std::invalid_argument("String can't be empty");
     }
     for(auto it = str.rbegin(); it != str.rend(); ++it) {
-        if (*it > '6' && *it < '0') {
+        if (*it > '6' || *it < '0') {
             throw std::invalid_argument("Characters in string must be digits and be not greater that 6");
         }
         _digits.PushBack(*it - '0');
@@ -57,48 +57,48 @@ Seven::Seven(Seven&& other) noexcept = default;
 Seven::~Seven() noexcept = default;
 
 
-inline bool Seven::Equals(const Seven& other) const noexcept {
+bool Seven::Equals(const Seven& other) const noexcept {
     return _digits.Equals(other._digits);
 }
 bool Seven::Smaller(const Seven& other) const noexcept {
     if (_digits.Size() > other._digits.Size()) {
-        return true;
+        return false;
     }
     if (_digits.Size() < other._digits.Size()) {
-        return false;
+        return true;
     }
 
     for (int i = _digits.Size() - 1; i > 0; --i) {
         if (_digits.Get(i) > other._digits.Get(i)) {
-            return true;
-        }
-        if (_digits.Get(i) < other._digits.Get(i)) {
             return false;
         }
-    }
-    return _digits.Get(0) > other._digits.Get(0);
-}
-bool Seven::Greater(const Seven& other) const noexcept {
-    if (_digits.Size() < other._digits.Size()) {
-        return true;
-    }
-    if (_digits.Size() > other._digits.Size()) {
-        return false;
-    }
-
-    for (int i = _digits.Size() - 1; i > 0; --i) {
         if (_digits.Get(i) < other._digits.Get(i)) {
             return true;
-        }
-        if (_digits.Get(i) > other._digits.Get(i)) {
-            return false;
         }
     }
     return _digits.Get(0) < other._digits.Get(0);
 }
+bool Seven::Greater(const Seven& other) const noexcept {
+    if (_digits.Size() < other._digits.Size()) {
+        return false;
+    }
+    if (_digits.Size() > other._digits.Size()) {
+        return true;
+    }
+
+    for (int i = _digits.Size() - 1; i > 0; --i) {
+        if (_digits.Get(i) < other._digits.Get(i)) {
+            return false;
+        }
+        if (_digits.Get(i) > other._digits.Get(i)) {
+            return true;
+        }
+    }
+    return _digits.Get(0) > other._digits.Get(0);
+}
 
 Seven Add(const Seven& first, const Seven& second) {
-    Seven result(std::max(first._digits.Size(), second._digits.Size()) + 1);
+    Seven result(std::max(first._digits.Size(), second._digits.Size()) + 1, 0);
 
     std::size_t minLength = std::min(first._digits.Size(), second._digits.Size());
     std::size_t carry = 0;
@@ -127,7 +127,7 @@ Seven Subtract(const Seven& first, const Seven& second) {
     if (first._digits.Size() < second._digits.Size()) {
         throw std::invalid_argument("First number must be greater or equal to second");
     }
-    Seven result(std::max(first._digits.Size(), second._digits.Size()));
+    Seven result(std::max(first._digits.Size(), second._digits.Size()), 0);
 
     std::size_t minLength = second._digits.Size();
     std::size_t carry = 0;

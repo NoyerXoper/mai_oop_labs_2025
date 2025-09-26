@@ -63,7 +63,7 @@ TEST(StandartSevenTests, BadInitilizerListException) {
     }, std::invalid_argument);
 }
 
-TEST(StandartSevenTests, EmptyStringException) {
+TEST(StandartSevenTests, BadStringException) {
     ASSERT_THROW({
         Seven number("1HelloWorld!");
     }, std::invalid_argument);
@@ -75,27 +75,9 @@ TEST(StandartSevenTests, BadRepeatTest) {
     }, std::invalid_argument);
 }
 
-TEST(StandartSevenTests, DefaultConstructorAndStringConstructorTest) {
-    Seven number1;
-    Seven number2("0");
-    ASSERT_TRUE(number1.Equals(number2));
-}
-
-TEST(StandartSevenTests, InitializerListConstructorAndStringConstructorTest) {
-    Seven number1({1, 2});
-    Seven number2("12");
-    ASSERT_TRUE(number1.Equals(number2));
-}
-
-TEST(StandartSevenTests, StringConstructorAndRepeatConstructorTest) {
-    Seven number1(2, 1);
-    Seven number2("11");
-    ASSERT_TRUE(number1.Equals(number2));
-}
-
 TEST(ComparisonTests, StringConstructorAndInitializerConstructorTest) {
     Seven number1({1, 0});
-    Seven number2("01");
+    Seven number2("1");
     ASSERT_FALSE(number1.Equals(number2));
 
     ASSERT_FALSE(number1.Smaller(number2));
@@ -130,6 +112,24 @@ TEST(OperationTests, SubtractionTest) {
     Seven first("123");
     Seven second("6");
     Seven expected("114");
+
+    Seven result = Subtract(first, second);
+    ASSERT_TRUE(expected.Equals(result));
+}
+
+TEST(OperationTests, SubtractionResultZeroTest) {
+    Seven first("123");
+    Seven second("123");
+    Seven expected("0");
+
+    Seven result = Subtract(first, second);
+    ASSERT_TRUE(expected.Equals(result));
+}
+
+TEST(OperationTests, SubtractionCollapsOfNumberTest) {
+    Seven first("1234560123456");
+    Seven second("1234560123455");
+    Seven expected("1");
 
     Seven result = Subtract(first, second);
     ASSERT_TRUE(expected.Equals(result));

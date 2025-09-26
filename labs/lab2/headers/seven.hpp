@@ -15,7 +15,7 @@ public:
     Seven(Seven&& other) noexcept;
     virtual ~Seven() noexcept;
 
-    inline bool Equals(const Seven& other) const noexcept;
+    bool Equals(const Seven& other) const noexcept;
     bool Greater(const Seven& other) const noexcept;
     bool Smaller(const Seven& other) const noexcept;
 
@@ -23,7 +23,6 @@ public:
     friend Seven Subtract(const Seven& first, const Seven& second);
 
 private:
-    Seven(std::size_t size);
     Array _digits;
 };
 

@@ -18,7 +18,7 @@ Array::Array(const std::initializer_list<unsigned char>& il): _capacity(il.size(
     }
 }
 
-Array::Array(const std::string& str) {
+Array::Array(const std::string& str): _capacity(str.size()), _size(str.size()), _data(new unsigned char[str.size()]) {
     int i = 0;
     for (unsigned char ch: str) {
         _data[i++] = ch;
@@ -47,11 +47,11 @@ std::size_t Array::Capacity() const noexcept {
     return _capacity;
 }
 
-inline unsigned char& Array::Get(std::size_t i) noexcept {
+unsigned char& Array::Get(std::size_t i) noexcept {
     return _data[i];
 }
 
-inline unsigned char Array::Get(std::size_t i) const noexcept {
+unsigned char Array::Get(std::size_t i) const noexcept {
     return _data[i];
 }
 
@@ -68,19 +68,19 @@ void Array::PopBack() {
 }
 
 
-inline unsigned char& Array::Front() {
+unsigned char& Array::Front() {
     return _data[0];
 };
 
-inline unsigned char Array::Front() const {
+unsigned char Array::Front() const {
     return _data[0];
 }
 
-inline unsigned char& Array::Back() {
+unsigned char& Array::Back() {
     return _data[_size - 1];
 }
 
-inline unsigned char Array::Back() const {
+unsigned char Array::Back() const {
     return _data[_size - 1];
 }
 
@@ -91,7 +91,10 @@ void Array::Reserve(std::size_t size) {
     }
 
     unsigned char* new_data = new unsigned char[size];
-    std::uninitialized_move(_data, _data + _size, new_data);
+    _capacity = size;
+    if (_data) {
+        std::uninitialized_move(_data, _data + _size, new_data);
+    }
     delete[] _data;
     _data = new_data;
 }
@@ -108,7 +111,7 @@ bool Array::Equals(const Array& other) const noexcept {
     return true;
 }
 
-inline void Array::CheckCapacity(std::size_t size) {
+void Array::CheckCapacity(std::size_t size) {
     if (size <= _capacity) {
         return;
     }
