@@ -1,5 +1,7 @@
 #include <initializer_list>
+
 #include <gtest/gtest.h>
+
 #include "array.hpp"
 
 TEST(StandartArrayTest, CreationTest) {
@@ -111,4 +113,3 @@ int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
-

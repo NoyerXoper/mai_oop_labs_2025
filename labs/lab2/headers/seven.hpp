@@ -2,6 +2,7 @@
 
 #include <initializer_list>
 #include <string>
+
 #include "array.hpp"
 
 class Seven {
