@@ -1,5 +1,5 @@
 #include <iostream>
-#include "src/filter_text.cpp"
+#include "filter_text.hpp"
 
 
 int main() {

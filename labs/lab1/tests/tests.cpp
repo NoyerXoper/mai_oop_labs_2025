@@ -1,7 +1,7 @@
-#include <gtest>
+#include <gtest/gtest.h>
 #include <string>
 #include <vector>
-#include "filter_text.cpp"
+#include "filter_text.hpp"
 
 
 TEST(FilterTextTest, BasicTest) {

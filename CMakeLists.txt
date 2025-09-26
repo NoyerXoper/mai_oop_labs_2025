@@ -12,4 +12,4 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-add_subdirectory(labs/lab1)
+add_subdirectory(labs)
